@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Special Gift for You ❤️</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "romantic-pink": "#FF8FAB",
+              "romantic-dark": "#C75B7A",
+              "soft-cream": "#FBF0F4",
+              "angpao-red": "#D32F2F",
+              "angpao-gold": "#FFD700",
+            },
+            fontFamily: {
+              heading: ['"Playfair Display"', "serif"],
+              body: ["Inter", "sans-serif"],
+            },
+            animation: {
+              "gradient-x": "gradient-x 15s ease infinite",
+              float: "float 6s ease-in-out infinite",
+            },
+            keyframes: {
+              "gradient-x": {
+                "0%, 100%": {
+                  "background-size": "200% 200%",
+                  "background-position": "left center",
+                },
+                "50%": {
+                  "background-size": "200% 200%",
+                  "background-position": "right center",
+                },
+              },
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-15px)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .glass-card {
+          @apply bg-white/40 backdrop-blur-lg border border-white/40 shadow-xl rounded-[2rem];
+        }
+        .envelope-flap {
+          clip-path: polygon(0 0, 50% 100%, 100% 0);
+        }
+      }
+      /* Hilangkan scrollbar tapi tetap bisa scroll */
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      body {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+
+  <body
+    class="font-body min-h-screen bg-gradient-to-br from-rose-200 via-purple-200 to-indigo-200 animate-gradient-x flex items-center justify-center p-4"
+  >
+    <div
+      id="start-screen"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/20 backdrop-blur-sm p-4 transition-all duration-700"
+    >
+      <div
+        onclick="openAngpao()"
+        class="relative cursor-pointer group animate-float w-[80vw] max-w-[300px] aspect-[3/4] transition-transform duration-300 hover:scale-105 active:scale-95"
+      >
+        <div
+          class="absolute inset-0 bg-angpao-red rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-red-900 flex flex-col items-center justify-end pb-[15%] overflow-hidden"
+        >
+          <div
+            class="absolute inset-3 border-2 border-angpao-gold/30 rounded-xl pointer-events-none"
+          ></div>
+
+          <h1
+            class="font-heading text-2xl md:text-3xl text-angpao-gold font-bold mb-2 drop-shadow-md"
+          >
+            For You ❤️
+          </h1>
+          <p
+            class="text-white/80 text-xs md:text-sm animate-pulse tracking-widest uppercase"
+          >
+            Klik Untuk Buka
+          </p>
+        </div>
+
+        <div
+          class="absolute top-0 left-0 w-full h-[40%] bg-red-700 envelope-flap shadow-md z-10 origin-top transition-all duration-500 group-hover:rotate-x-12"
+        ></div>
+
+        <div
+          class="absolute top-[35%] left-1/2 transform -translate-x-1/2 z-20"
+        >
+          <div
+            class="w-16 h-16 md:w-20 md:h-20 bg-angpao-gold rounded-full border-4 border-yellow-200 shadow-xl flex items-center justify-center group-hover:bg-yellow-400 transition-colors"
+          >
+            <span
+              class="text-red-800 font-extrabold text-sm md:text-base tracking-wider"
+              >OPEN</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="main-content"
+      class="hidden relative glass-card w-full max-w-xl p-6 md:p-10 my-8 text-center transform transition-all duration-1000 translate-y-20 opacity-0"
+    >
+      <div class="absolute top-3 right-3 z-30">
+        <button
+          id="music-btn"
+          class="flex items-center gap-2 bg-white/60 hover:bg-white/90 backdrop-blur text-xs md:text-sm text-romantic-dark font-bold py-2 px-3 rounded-full transition-all shadow-sm"
+        >
+          <span>🎵</span>
+          <span id="music-status" class="hidden md:inline">Play</span>
+        </button>
+        <audio id="bg-music" loop>
+          <source src="assets/Feast - Nina.mp3" type="audio/mpeg" />
+        </audio>
+      </div>
+
+      <div class="relative w-48 h-48 md:w-72 md:h-72 mx-auto mt-8 mb-8 group">
+        <div
+          class="absolute -inset-3 bg-gradient-to-tr from-romantic-pink to-purple-400 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-all duration-500 animate-pulse"
+        ></div>
+        <div
+          class="relative h-full w-full rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border-4 border-white/80 shadow-2xl rotate-2 group-hover:rotate-0 transition-all duration-500"
+        >
+          <img
+            id="slideshow"
+            src="assets/foto1.jpg"
+            alt="Memories"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      <div
+        class="min-h-[100px] md:min-h-[120px] flex items-center justify-center mb-6 px-2"
+      >
+        <h2
+          id="typing-text"
+          class="font-heading text-lg md:text-2xl text-gray-800 leading-relaxed"
+        ></h2>
+        <span class="animate-pulse text-romantic-dark text-xl md:text-2xl ml-1"
+          >|</span
+        >
+      </div>
+
+      <div
+        class="bg-white/30 rounded-2xl p-4 md:p-6 shadow-inner border border-white/20"
+      >
+        <p
+          class="text-gray-600 text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 font-semibold"
+        >
+          Making the world beautiful for:
+        </p>
+        <div
+          id="countdown"
+          class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-heading text-romantic-dark"
+        >
+          <div class="p-2">Loading...</div>
+        </div>
+      </div>
+
+      <p class="text-gray-500 text-[10px] md:text-xs mt-8 opacity-70">
+        Made with ❤️ specifically for you.
+      </p>
+    </div>
+
+    <script>
+      // --- KONFIGURASI (EDIT DI SINI) ---
+      const config = {
+        birthDate: "2000-05-20", // Tanggal Lahir (YYYY-MM-DD)
+        typingMessage:
+          "Happy Birthday, Cantik! 🎉 Semoga di umur yang baru ini kamu makin bahagia. Semoga luka-luka masalalumu sembuh. Semoga makin cantik (padahal udah cantik bgt). Semoga tahun ini jadi tahun terbaik buat kita. Makasih sudah datang di hidupku. I love you! ❤️",
+
+        // --- DAFTAR 5 FOTO (Ganti nama file sesuai di folder assets kamu) ---
+        photos: [
+          "assets/20260203_170856.jpg",
+          "assets/20260203_170826.jpg",
+          "assets/foto3.jpg",
+          "assets/foto4.jpg", // Tambahkan foto ke-4 di folder assets
+          "assets/20260203_160514.jpg", // Tambahkan foto ke-5 di folder assets
+        ],
+      };
+
+      // --- LOGIC SYSTEM ---
+
+      // 1. Buka Angpao
+      function openAngpao() {
+        const startScreen = document.getElementById("start-screen");
+        startScreen.style.transform = "scale(1.2)";
+        startScreen.style.opacity = "0";
+        setTimeout(() => {
+          startScreen.remove();
+          unlockContent();
+        }, 500);
+      }
+
+      // 2. Unlock Konten
+      function unlockContent() {
+        const mainContent = document.getElementById("main-content");
+        mainContent.classList.remove("hidden");
+        setTimeout(() => {
+          mainContent.classList.remove("translate-y-20", "opacity-0");
+        }, 100);
+
+        toggleMusic(true);
+        startConfetti();
+        startTyping();
+        startSlideshow();
+        setInterval(updateCountdown, 1000);
+      }
+
+      // 3. Efek Confetti (Merah & Emas)
+      function startConfetti() {
+        var duration = 3 * 1000;
+        var end = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        var interval = setInterval(function () {
+          var timeLeft = end - Date.now();
+          if (timeLeft <= 0) return clearInterval(interval);
+          var particleCount = 50 * (timeLeft / duration);
+
+          confetti(
+            Object.assign({}, defaults, {
+              particleCount,
+              origin: { x: 0.1 + Math.random() * 0.2, y: Math.random() - 0.2 },
+              colors: ["#ff0000", "#ffd700", "#ffffff"],
+            }),
+          );
+          confetti(
+            Object.assign({}, defaults, {
+              particleCount,
+              origin: { x: 0.7 + Math.random() * 0.2, y: Math.random() - 0.2 },
+              colors: ["#ff0000", "#ffd700", "#ffffff"],
+            }),
+          );
+        }, 250);
+      }
+
+      // 4. Musik Logic
+      const audio = document.getElementById("bg-music");
+      const musicBtn = document.getElementById("music-btn");
+      const musicStatus = document.getElementById("music-status");
+      let isPlaying = false;
+
+      function toggleMusic(forcePlay = false) {
+        if (forcePlay || !isPlaying) {
+          audio
+            .play()
+            .then(() => {
+              isPlaying = true;
+              musicStatus.innerText = "Pause";
+              musicBtn.classList.add("animate-pulse", "bg-pink-200");
+            })
+            .catch(() => console.log("Autoplay blocked"));
+        } else {
+          audio.pause();
+          isPlaying = false;
+          musicStatus.innerText = "Play";
+          musicBtn.classList.remove("animate-pulse", "bg-pink-200");
+        }
+      }
+      musicBtn.addEventListener("click", () => toggleMusic());
+
+      // 5. Typing Effect
+      let typeIndex = 0;
+      function startTyping() {
+        if (typeIndex < config.typingMessage.length) {
+          document.getElementById("typing-text").innerHTML +=
+            config.typingMessage.charAt(typeIndex);
+          typeIndex++;
+          setTimeout(startTyping, 60);
+        } else {
+          document.querySelector(".animate-pulse.text-xl").remove();
+        }
+      }
+
+      // 6. Slideshow Logic (Support Unlimited Photos)
+      let photoIndex = 0;
+      function startSlideshow() {
+        const imgElement = document.getElementById("slideshow");
+        // Set foto pertama langsung biar ga nunggu interval
+        imgElement.src = config.photos[0];
+
+        setInterval(() => {
+          photoIndex = (photoIndex + 1) % config.photos.length;
+          imgElement.style.opacity = "0"; // Fade Out
+          setTimeout(() => {
+            imgElement.src = config.photos[photoIndex];
+            imgElement.style.opacity = "1"; // Fade In
+          }, 400); // Durasi transisi
+        }, 3500); // Ganti tiap 3.5 detik
+      }
+
+      // 7. Countdown Logic
+      function updateCountdown() {
+        const diff = new Date() - new Date(config.birthDate);
+        const vals = {
+          Hari: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          Jam: Math.floor((diff / (1000 * 60 * 60)) % 24),
+          Menit: Math.floor((diff / 1000 / 60) % 60),
+          Detik: Math.floor((diff / 1000) % 60),
+        };
+
+        document.getElementById("countdown").innerHTML = Object.entries(vals)
+          .map(
+            ([k, v]) => `
+            <div class="flex flex-col items-center bg-white/50 rounded-xl p-2 md:p-3 shadow-sm transition-transform hover:scale-105">
+                <span class="text-xl md:text-3xl font-bold text-romantic-dark">${v}</span>
+                <span class="text-[10px] md:text-xs text-gray-500 uppercase font-bold">${k}</span>
+            </div>
+        `,
+          )
+          .join("");
+      }
+    </script>
+  </body>
+</html>
