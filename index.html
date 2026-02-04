@@ -12,8 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
       rel="stylesheet"
     />
 
@@ -24,28 +26,25 @@
             colors: {
               "romantic-pink": "#FF8FAB",
               "romantic-dark": "#C75B7A",
-              "soft-cream": "#FBF0F4",
+              "soft-cream": "#FFF5F8",
               "angpao-red": "#D32F2F",
               "angpao-gold": "#FFD700",
             },
             fontFamily: {
               heading: ['"Playfair Display"', "serif"],
-              body: ["Inter", "sans-serif"],
+              hand: ['"Dancing Script"', "cursive"],
+              body: ['"Outfit"', "sans-serif"],
             },
             animation: {
-              "gradient-x": "gradient-x 15s ease infinite",
+              "gradient-x": "gradient-x 10s ease infinite",
               float: "float 6s ease-in-out infinite",
+              "float-slow": "float 8s ease-in-out infinite",
+              pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
             },
             keyframes: {
               "gradient-x": {
-                "0%, 100%": {
-                  "background-size": "200% 200%",
-                  "background-position": "left center",
-                },
-                "50%": {
-                  "background-size": "200% 200%",
-                  "background-position": "right center",
-                },
+                "0%, 100%": { "background-position": "0% 50%" },
+                "50%": { "background-position": "100% 50%" },
               },
               float: {
                 "0%, 100%": { transform: "translateY(0)" },
@@ -59,68 +58,104 @@
 
     <style type="text/tailwindcss">
       @layer utilities {
+        /* Glassmorphism Premium */
         .glass-card {
-          @apply bg-white/40 backdrop-blur-lg border border-white/40 shadow-xl rounded-[2rem];
+          background-color: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(80px);
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+          border-radius: 2.5rem;
         }
         .envelope-flap {
           clip-path: polygon(0 0, 50% 100%, 100% 0);
         }
+        /* Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
       }
-      /* Hilangkan scrollbar tapi tetap bisa scroll */
-      ::-webkit-scrollbar {
-        display: none;
+
+      /* Background Pattern */
+      .bg-pattern {
+        background-color: #ffffff;
+        background-image:
+          radial-gradient(#db2777 0.5px, transparent 0.5px),
+          radial-gradient(#db2777 0.5px, #ffffff 0.5px);
+        background-size: 20px 20px;
+        background-position:
+          0 0,
+          10px 10px;
+        opacity: 0.1;
       }
-      body {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+
+      /* Tape Effect for Photo */
+      .washi-tape {
+        background-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(2px);
       }
     </style>
   </head>
 
   <body
-    class="font-body min-h-screen bg-gradient-to-br from-rose-200 via-purple-200 to-indigo-200 animate-gradient-x flex items-center justify-center p-4"
+    class="font-body min-h-screen bg-gradient-to-tr from-pink-100 via-purple-100 to-indigo-100 overflow-hidden relative flex items-center justify-center p-4 selection:bg-romantic-pink selection:text-white"
   >
+    <div class="fixed inset-0 z-0 pointer-events-none">
+      <div class="absolute top-0 left-0 w-full h-full bg-pattern"></div>
+      <div
+        class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float-slow"
+      ></div>
+    </div>
+
     <div
       id="start-screen"
-      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/20 backdrop-blur-sm p-4 transition-all duration-700"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm p-4 transition-all duration-700"
     >
       <div
         onclick="openAngpao()"
-        class="relative cursor-pointer group animate-float w-[80vw] max-w-[300px] aspect-[3/4] transition-transform duration-300 hover:scale-105 active:scale-95"
+        class="relative cursor-pointer group animate-float w-[280px] md:w-[320px] aspect-[3/4] transition-transform duration-300 hover:scale-105 active:scale-95"
       >
         <div
-          class="absolute inset-0 bg-angpao-red rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-red-900 flex flex-col items-center justify-end pb-[15%] overflow-hidden"
+          class="absolute inset-0 bg-gradient-to-b from-red-600 to-red-800 rounded-2xl shadow-[0_25px_60px_-12px_rgba(0,0,0,0.5)] border border-red-900 flex flex-col items-center justify-end pb-[20%] overflow-hidden"
         >
           <div
-            class="absolute inset-3 border-2 border-angpao-gold/30 rounded-xl pointer-events-none"
+            class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"
+          ></div>
+
+          <div
+            class="absolute inset-3 border-2 border-yellow-400/50 rounded-xl pointer-events-none"
           ></div>
 
           <h1
-            class="font-heading text-2xl md:text-3xl text-angpao-gold font-bold mb-2 drop-shadow-md"
+            class="font-heading text-3xl md:text-4xl text-yellow-300 font-bold mb-1 drop-shadow-lg tracking-wide"
           >
-            For You ❤️
+            For You
           </h1>
           <p
-            class="text-white/80 text-xs md:text-sm animate-pulse tracking-widest uppercase"
+            class="text-white/90 text-xs font-medium tracking-[0.3em] uppercase opacity-80 group-hover:opacity-100 transition-opacity"
           >
-            Klik Untuk Buka
+            Tap to Open
           </p>
         </div>
 
         <div
-          class="absolute top-0 left-0 w-full h-[40%] bg-red-700 envelope-flap shadow-md z-10 origin-top transition-all duration-500 group-hover:rotate-x-12"
+          class="absolute top-0 left-0 w-full h-[38%] bg-gradient-to-b from-red-700 to-red-600 envelope-flap shadow-lg z-10 origin-top transition-all duration-500 group-hover:rotate-x-12 border-t border-red-500"
         ></div>
 
         <div
-          class="absolute top-[35%] left-1/2 transform -translate-x-1/2 z-20"
+          class="absolute top-[33%] left-1/2 transform -translate-x-1/2 z-20"
         >
           <div
-            class="w-16 h-16 md:w-20 md:h-20 bg-angpao-gold rounded-full border-4 border-yellow-200 shadow-xl flex items-center justify-center group-hover:bg-yellow-400 transition-colors"
+            class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-yellow-300 via-yellow-500 to-yellow-600 rounded-full border-4 border-yellow-100/50 shadow-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
           >
-            <span
-              class="text-red-800 font-extrabold text-sm md:text-base tracking-wider"
-              >OPEN</span
-            >
+            <span class="text-red-900 font-bold text-xl md:text-2xl">❤️</span>
           </div>
         </div>
       </div>
@@ -128,92 +163,129 @@
 
     <div
       id="main-content"
-      class="hidden relative glass-card w-full max-w-xl p-6 md:p-10 my-8 text-center transform transition-all duration-1000 translate-y-20 opacity-0"
+      class="hidden relative glass-card w-full max-w-lg p-6 md:p-8 my-4 text-center transform transition-all duration-1000 translate-y-20 opacity-0 z-10"
     >
-      <div class="absolute top-3 right-3 z-30">
+      <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 z-30">
         <button
           id="music-btn"
-          class="flex items-center gap-2 bg-white/60 hover:bg-white/90 backdrop-blur text-xs md:text-sm text-romantic-dark font-bold py-2 px-3 rounded-full transition-all shadow-sm"
+          class="flex items-center gap-3 bg-white hover:bg-pink-50 text-romantic-dark font-semibold py-2 px-5 rounded-full transition-all shadow-lg hover:shadow-xl border border-pink-100 group"
         >
-          <span>🎵</span>
-          <span id="music-status" class="hidden md:inline">Play</span>
+          <span
+            class="animate-spin-slow group-hover:scale-110 transition-transform"
+            >💿</span
+          >
+          <span id="music-status" class="text-xs uppercase tracking-widest"
+            >Play Music</span
+          >
         </button>
         <audio id="bg-music" loop>
           <source src="assets/Feast - Nina.mp3" type="audio/mpeg" />
         </audio>
       </div>
 
-      <div class="relative w-48 h-48 md:w-72 md:h-72 mx-auto mt-8 mb-8 group">
+      <div
+        class="relative w-[260px] aspect-[3/4] mx-auto mt-10 mb-8 group perspective-1000"
+      >
         <div
-          class="absolute -inset-3 bg-gradient-to-tr from-romantic-pink to-purple-400 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-all duration-500 animate-pulse"
+          class="absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-6 washi-tape rotate-[-2deg] z-20 opacity-80"
         ></div>
+
         <div
-          class="relative h-full w-full rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border-4 border-white/80 shadow-2xl rotate-2 group-hover:rotate-0 transition-all duration-500"
+          class="relative h-full w-full bg-white p-3 pb-12 rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] rotate-2 group-hover:rotate-0 transition-all duration-700 ease-out"
         >
-          <img
-            id="slideshow"
-            src="assets/foto1.jpg"
-            alt="Memories"
-            class="w-full h-full object-cover"
-          />
+          <div
+            class="w-full h-full overflow-hidden rounded-sm bg-gray-100 relative"
+          >
+            <div
+              class="absolute inset-0 flex items-center justify-center text-gray-300"
+            >
+              <svg
+                class="w-10 h-10 animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            </div>
+            <img
+              id="slideshow"
+              src="assets/foto1.jpg"
+              alt="Our Memories"
+              class="relative w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+          </div>
+          <div class="absolute bottom-3 left-0 w-full text-center">
+            <span class="font-hand text-gray-400 text-xl">Us ❤️</span>
+          </div>
         </div>
       </div>
 
-      <div
-        class="min-h-[100px] md:min-h-[120px] flex items-center justify-center mb-6 px-2"
-      >
-        <h2
-          id="typing-text"
-          class="font-heading text-lg md:text-2xl text-gray-800 leading-relaxed"
-        ></h2>
-        <span class="animate-pulse text-romantic-dark text-xl md:text-2xl ml-1"
-          >|</span
-        >
-      </div>
-
-      <div
-        class="bg-white/30 rounded-2xl p-4 md:p-6 shadow-inner border border-white/20"
-      >
+      <div class="min-h-[100px] flex items-center justify-center mb-6 px-1">
         <p
-          class="text-gray-600 text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 font-semibold"
+          class="font-heading text-xl md:text-2xl text-gray-700 leading-relaxed drop-shadow-sm"
         >
-          Making the world beautiful for:
+          <span id="typing-text"></span>
+          <span class="animate-pulse text-romantic-pink">|</span>
         </p>
-        <div
-          id="countdown"
-          class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-heading text-romantic-dark"
-        >
-          <div class="p-2">Loading...</div>
+      </div>
+
+      <div class="py-6 italic">
+        <p class="font-hand text-2xl md:text-3xl text-romantic-dark">
+          "The world is a better place since you were born. Thank you for being
+          you."
+        </p>
+        <div class="mt-4 flex justify-center gap-4">
+          <span class="text-2xl animate-bounce">✨</span>
+          <span class="text-2xl animate-bounce" style="animation-delay: 0.2s"
+            >💖</span
+          >
+          <span class="text-2xl animate-bounce" style="animation-delay: 0.4s"
+            >✨</span
+          >
         </div>
       </div>
 
-      <p class="text-gray-500 text-[10px] md:text-xs mt-8 opacity-70">
+      <p class="text-gray-400 text-[10px] mt-2 font-body tracking-wider">
         Made with ❤️ specifically for you.
       </p>
     </div>
 
     <script>
-      // --- KONFIGURASI (EDIT DI SINI) ---
+      // --- KONFIGURASI ---
       const config = {
-        birthDate: "2000-05-20", // Tanggal Lahir (YYYY-MM-DD)
+        birthDate: "2000-05-20",
         typingMessage:
-          "Happy Birthday, Cantik! 🎉 Semoga di umur yang baru ini kamu makin bahagia. Semoga luka-luka masalalumu sembuh. Semoga makin cantik (padahal udah cantik bgt). Semoga tahun ini jadi tahun terbaik buat kita. Makasih sudah datang di hidupku. ❤️",
-
+          "Happy Birthday, Cantik! 🎉 Semoga di umur yang baru ini kamu makin bahagia. Semoga luka masalalu sembuh & senyummu makin manis. Makasih udah datang di hidupku. I Love You! ❤️",
         photos: [
           "assets/foto1.png",
           "assets/foto2.png",
           "assets/foto6.png",
+          "assets/foto8.png",
           "assets/foto3.png",
           "assets/foto7.png",
           "assets/foto5.png",
+          // Pastikan nama file sesuai!
         ],
       };
+
+      // --- LOGIC ---
 
       // 1. Buka Angpao
       function openAngpao() {
         const startScreen = document.getElementById("start-screen");
-        startScreen.style.transform = "scale(1.2)";
-        startScreen.style.opacity = "0";
+        startScreen.classList.add("opacity-0", "scale-150");
         setTimeout(() => {
           startScreen.remove();
           unlockContent();
@@ -224,9 +296,9 @@
       function unlockContent() {
         const mainContent = document.getElementById("main-content");
         mainContent.classList.remove("hidden");
-        setTimeout(() => {
-          mainContent.classList.remove("translate-y-20", "opacity-0");
-        }, 100);
+        // Trigger reflow
+        void mainContent.offsetWidth;
+        mainContent.classList.remove("translate-y-20", "opacity-0");
 
         toggleMusic(true);
         startConfetti();
@@ -235,35 +307,34 @@
         setInterval(updateCountdown, 1000);
       }
 
-      // 3. Efek Confetti (Merah & Emas)
+      // 3. Confetti Premium
       function startConfetti() {
         var duration = 3 * 1000;
         var end = Date.now() + duration;
-        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-        var interval = setInterval(function () {
-          var timeLeft = end - Date.now();
-          if (timeLeft <= 0) return clearInterval(interval);
-          var particleCount = 50 * (timeLeft / duration);
+        (function frame() {
+          confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ["#FF8FAB", "#FFD700", "#ffffff"],
+          });
+          confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ["#FF8FAB", "#FFD700", "#ffffff"],
+          });
 
-          confetti(
-            Object.assign({}, defaults, {
-              particleCount,
-              origin: { x: 0.1 + Math.random() * 0.2, y: Math.random() - 0.2 },
-              colors: ["#ff0000", "#ffd700", "#ffffff"],
-            }),
-          );
-          confetti(
-            Object.assign({}, defaults, {
-              particleCount,
-              origin: { x: 0.7 + Math.random() * 0.2, y: Math.random() - 0.2 },
-              colors: ["#ff0000", "#ffd700", "#ffffff"],
-            }),
-          );
-        }, 250);
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
       }
 
-      // 4. Musik Logic
+      // 4. Music Logic
       const audio = document.getElementById("bg-music");
       const musicBtn = document.getElementById("music-btn");
       const musicStatus = document.getElementById("music-status");
@@ -276,14 +347,14 @@
             .then(() => {
               isPlaying = true;
               musicStatus.innerText = "Pause";
-              musicBtn.classList.add("animate-pulse", "bg-pink-200");
+              musicBtn.classList.add("ring-2", "ring-pink-300");
             })
             .catch(() => console.log("Autoplay blocked"));
         } else {
           audio.pause();
           isPlaying = false;
-          musicStatus.innerText = "Play";
-          musicBtn.classList.remove("animate-pulse", "bg-pink-200");
+          musicStatus.innerText = "Play Music";
+          musicBtn.classList.remove("ring-2", "ring-pink-300");
         }
       }
       musicBtn.addEventListener("click", () => toggleMusic());
@@ -295,27 +366,26 @@
           document.getElementById("typing-text").innerHTML +=
             config.typingMessage.charAt(typeIndex);
           typeIndex++;
-          setTimeout(startTyping, 60);
+          setTimeout(startTyping, 50); // Kecepatan ngetik
         } else {
-          document.querySelector(".animate-pulse.text-xl").remove();
+          document.querySelector(".animate-pulse.text-romantic-pink").remove();
         }
       }
 
-      // 6. Slideshow Logic (Support Unlimited Photos)
+      // 6. Slideshow Logic
       let photoIndex = 0;
       function startSlideshow() {
         const imgElement = document.getElementById("slideshow");
-        // Set foto pertama langsung biar ga nunggu interval
         imgElement.src = config.photos[0];
 
         setInterval(() => {
           photoIndex = (photoIndex + 1) % config.photos.length;
-          imgElement.style.opacity = "0"; // Fade Out
+          imgElement.classList.add("opacity-0", "scale-95"); // Efek fade out + zoom out dikit
           setTimeout(() => {
             imgElement.src = config.photos[photoIndex];
-            imgElement.style.opacity = "1"; // Fade In
-          }, 400); // Durasi transisi
-        }, 3500); // Ganti tiap 3.5 detik
+            imgElement.classList.remove("opacity-0", "scale-95");
+          }, 500);
+        }, 4000);
       }
 
       // 7. Countdown Logic
@@ -331,9 +401,9 @@
         document.getElementById("countdown").innerHTML = Object.entries(vals)
           .map(
             ([k, v]) => `
-            <div class="flex flex-col items-center bg-white/50 rounded-xl p-2 md:p-3 shadow-sm transition-transform hover:scale-105">
-                <span class="text-xl md:text-3xl font-bold text-romantic-dark">${v}</span>
-                <span class="text-[10px] md:text-xs text-gray-500 uppercase font-bold">${k}</span>
+            <div class="flex flex-col items-center bg-white/60 backdrop-blur-sm rounded-2xl p-2 shadow-sm border border-white/50 transition-all hover:-translate-y-1 hover:shadow-md">
+                <span class="text-xl md:text-2xl font-bold text-gray-800 font-body">${v}</span>
+                <span class="text-[9px] md:text-[10px] text-romantic-dark uppercase tracking-wider font-bold mt-1">${k}</span>
             </div>
         `,
           )
