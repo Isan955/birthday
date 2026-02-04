@@ -58,7 +58,6 @@
 
     <style type="text/tailwindcss">
       @layer utilities {
-        /* Glassmorphism Premium */
         .glass-card {
           background-color: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(80px);
@@ -69,7 +68,7 @@
         .envelope-flap {
           clip-path: polygon(0 0, 50% 100%, 100% 0);
         }
-        /* Hide Scrollbar */
+        /* Hide Scrollbar agar tetap rapi */
         .no-scrollbar::-webkit-scrollbar {
           display: none;
         }
@@ -79,7 +78,6 @@
         }
       }
 
-      /* Background Pattern */
       .bg-pattern {
         background-color: #ffffff;
         background-image:
@@ -92,7 +90,6 @@
         opacity: 0.1;
       }
 
-      /* Tape Effect for Photo */
       .washi-tape {
         background-color: rgba(255, 255, 255, 0.4);
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -102,7 +99,7 @@
   </head>
 
   <body
-    class="font-body min-h-screen bg-gradient-to-tr from-pink-100 via-purple-100 to-indigo-100 overflow-hidden relative flex items-center justify-center p-4 selection:bg-romantic-pink selection:text-white"
+    class="font-body min-h-screen bg-gradient-to-tr from-pink-100 via-purple-100 to-indigo-100 relative flex flex-col items-center justify-start p-4 overflow-y-auto overflow-x-hidden selection:bg-romantic-pink selection:text-white pb-20"
   >
     <div class="fixed inset-0 z-0 pointer-events-none">
       <div class="absolute top-0 left-0 w-full h-full bg-pattern"></div>
@@ -128,11 +125,9 @@
           <div
             class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"
           ></div>
-
           <div
             class="absolute inset-3 border-2 border-yellow-400/50 rounded-xl pointer-events-none"
           ></div>
-
           <h1
             class="font-heading text-3xl md:text-4xl text-yellow-300 font-bold mb-1 drop-shadow-lg tracking-wide"
           >
@@ -144,11 +139,9 @@
             Tap to Open
           </p>
         </div>
-
         <div
           class="absolute top-0 left-0 w-full h-[38%] bg-gradient-to-b from-red-700 to-red-600 envelope-flap shadow-lg z-10 origin-top transition-all duration-500 group-hover:rotate-x-12 border-t border-red-500"
         ></div>
-
         <div
           class="absolute top-[33%] left-1/2 transform -translate-x-1/2 z-20"
         >
@@ -163,7 +156,7 @@
 
     <div
       id="main-content"
-      class="hidden relative glass-card w-full max-w-lg p-6 md:p-8 my-4 text-center transform transition-all duration-1000 translate-y-20 opacity-0 z-10"
+      class="hidden relative glass-card w-full max-w-lg p-6 md:p-8 mt-10 mb-20 text-center transform transition-all duration-1000 translate-y-20 opacity-0 z-10"
     >
       <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 z-30">
         <button
@@ -257,7 +250,7 @@
         </div>
       </div>
 
-      <p class="text-gray-400 text-[10px] mt-2 font-body tracking-wider">
+      <p class="text-gray-400 text-[10px] mt-8 font-body tracking-wider">
         Made with ❤️ specifically for you.
       </p>
     </div>
@@ -276,13 +269,10 @@
           "assets/foto3.png",
           "assets/foto7.png",
           "assets/foto5.png",
-          // Pastikan nama file sesuai!
         ],
       };
 
       // --- LOGIC ---
-
-      // 1. Buka Angpao
       function openAngpao() {
         const startScreen = document.getElementById("start-screen");
         startScreen.classList.add("opacity-0", "scale-150");
@@ -292,11 +282,9 @@
         }, 500);
       }
 
-      // 2. Unlock Konten
       function unlockContent() {
         const mainContent = document.getElementById("main-content");
         mainContent.classList.remove("hidden");
-        // Trigger reflow
         void mainContent.offsetWidth;
         mainContent.classList.remove("translate-y-20", "opacity-0");
 
@@ -307,7 +295,6 @@
         setInterval(updateCountdown, 1000);
       }
 
-      // 3. Confetti Premium
       function startConfetti() {
         var duration = 3 * 1000;
         var end = Date.now() + duration;
@@ -334,7 +321,6 @@
         })();
       }
 
-      // 4. Music Logic
       const audio = document.getElementById("bg-music");
       const musicBtn = document.getElementById("music-btn");
       const musicStatus = document.getElementById("music-status");
@@ -359,20 +345,18 @@
       }
       musicBtn.addEventListener("click", () => toggleMusic());
 
-      // 5. Typing Effect
       let typeIndex = 0;
       function startTyping() {
         if (typeIndex < config.typingMessage.length) {
           document.getElementById("typing-text").innerHTML +=
             config.typingMessage.charAt(typeIndex);
           typeIndex++;
-          setTimeout(startTyping, 50); // Kecepatan ngetik
+          setTimeout(startTyping, 50);
         } else {
           document.querySelector(".animate-pulse.text-romantic-pink").remove();
         }
       }
 
-      // 6. Slideshow Logic
       let photoIndex = 0;
       function startSlideshow() {
         const imgElement = document.getElementById("slideshow");
@@ -380,7 +364,7 @@
 
         setInterval(() => {
           photoIndex = (photoIndex + 1) % config.photos.length;
-          imgElement.classList.add("opacity-0", "scale-95"); // Efek fade out + zoom out dikit
+          imgElement.classList.add("opacity-0", "scale-95");
           setTimeout(() => {
             imgElement.src = config.photos[photoIndex];
             imgElement.classList.remove("opacity-0", "scale-95");
@@ -388,7 +372,6 @@
         }, 4000);
       }
 
-      // 7. Countdown Logic
       function updateCountdown() {
         const diff = new Date() - new Date(config.birthDate);
         const vals = {
